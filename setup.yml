@@ -1,0 +1,21 @@
+---
+- hosts: all
+  gather_facts: yes
+
+  roles:
+    - role: geerlingguy.docker
+
+  tasks:
+    - name: apt update cache
+      apt:
+        update_cache: yes
+
+    - name: install pip
+      apt:
+        name: python3-pip
+
+    - name: setup env vars
+      tags: env
+      template:
+        src: templates/.env.j2
+        dest: /.env
