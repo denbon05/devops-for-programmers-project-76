@@ -1,9 +1,28 @@
 ---
-- hosts: all
+- hosts: webservers
   gather_facts: yes
 
   roles:
     - role: geerlingguy.docker
+    - role: datadog.datadog
+      tags: datadog
+      become: yes
+      vars:
+        datadog_api_key: '{{datadog_key}}'
+        datadog_site: datadoghq.eu
+    # - role: datadog.datadog
+    #   tags: datadog
+    #   vars:
+    #     datadog_api_key:
+    #     datadog_site: datadoghq.eu
+    #     datadog_checks:
+    #       process:
+    #         instances:
+    #           - name: http_check
+    #             search_string: ['http_check']
+    #             url: http://0.0.0.0:80
+    #             method: get
+    #             http_response_status_code: 200
 
   tasks:
     - name: apt update cache
