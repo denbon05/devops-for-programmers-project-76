@@ -1,6 +1,16 @@
 ---
 - hosts: webservers
   gather_facts: yes
+  vars:
+    ip4: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
+
+  pre_tasks:
+    - name: create config for http_check agent
+      tags: [datadog, datadog-conf]
+      template:
+        src: templates/http_check.d/conf.yml.j2
+        dest: /etc/datadog-agent/conf.d/http_check.d/conf.yaml
+        owner: dd-agent
 
   roles:
     - role: geerlingguy.docker
@@ -9,20 +19,17 @@
       become: yes
       vars:
         datadog_api_key: '{{datadog_key}}'
-        datadog_site: datadoghq.eu
-    # - role: datadog.datadog
-    #   tags: datadog
-    #   vars:
-    #     datadog_api_key:
-    #     datadog_site: datadoghq.eu
-    #     datadog_checks:
-    #       process:
-    #         instances:
-    #           - name: http_check
-    #             search_string: ['http_check']
-    #             url: http://0.0.0.0:80
-    #             method: get
-    #             http_response_status_code: 200
+        datadog_site: 'us5.datadoghq.com'
+        datadog_checks:
+          process:
+            init_config:
+            instances:
+              - name: http_check
+                exact_match: False
+                search_string: ['http_check', 'http_check.d']
+                url: http://0.0.0.0:80
+                method: get
+                http_response_status_code: 200
 
   tasks:
     - name: apt update cache
