@@ -2,7 +2,7 @@ touch-vault-secret-file:
 	touch .vault-secret
 
 setup:
-	ansible-playbook setup.yml -i inventory.ini
+	ansible-playbook setup.yml -i inventory.ini -vv
 
 deploy:
 	ansible-playbook playbook.yml -i inventory.ini -vv

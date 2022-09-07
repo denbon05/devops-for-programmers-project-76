@@ -1,22 +1,24 @@
 ---
-- hosts: webservers
-  gather_facts: yes
+- name: Setup
+  hosts: webservers
+  gather_facts: true
   vars:
     ip4: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
 
   pre_tasks:
-    - name: create config for http_check agent
+    - name: Create config for http_check agent
       tags: [datadog, datadog-conf]
-      template:
+      ansible.builtin.template:
         src: templates/http_check.d/conf.yml.j2
         dest: /etc/datadog-agent/conf.d/http_check.d/conf.yaml
         owner: dd-agent
+        mode: 0644
 
   roles:
     - role: geerlingguy.docker
     - role: datadog.datadog
       tags: datadog
-      become: yes
+      become: true
       vars:
         datadog_api_key: '{{datadog_key}}'
         datadog_site: 'us5.datadoghq.com'
@@ -25,23 +27,24 @@
             init_config:
             instances:
               - name: http_check
-                exact_match: False
+                exact_match: false
                 search_string: ['http_check', 'http_check.d']
                 url: http://0.0.0.0:80
                 method: get
                 http_response_status_code: 200
 
   tasks:
-    - name: apt update cache
-      apt:
-        update_cache: yes
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
 
-    - name: install pip
-      apt:
+    - name: Install pip
+      ansible.builtin.apt:
         name: python3-pip
 
-    - name: setup env vars
+    - name: Setup env vars
       tags: env
-      template:
+      ansible.builtin.template:
         src: templates/.env.j2
         dest: /.env
+        mode: 0644

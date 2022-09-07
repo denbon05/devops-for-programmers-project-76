@@ -1,8 +1,13 @@
 ---
-- hosts: all
+- name: Prepare environment
+  ansible.builtin.import_playbook: setup.yml
+  tags: [setup]
+
+- name: Deploy
+  hosts: webservers
 
   tasks:
-    - name: run redmine
+    - name: Run redmine
       community.docker.docker_container:
         name: redmine
         image: 'redmine:{{ version | default("5.0.2-alpine") }}'
