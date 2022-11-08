@@ -1,9 +1,4 @@
----
-- name: Prepare environment
-  ansible.builtin.import_playbook: setup.yml
-  tags: [setup]
-
-- name: Deploy
+- name: Deploy app
   hosts: webservers
 
   tasks:
@@ -14,5 +9,4 @@
         restart_policy: always
         state: started
         ports:
-          - 80:3000
-        env_file: /.env
+          - 3000:3000

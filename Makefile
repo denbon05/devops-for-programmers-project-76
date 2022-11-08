@@ -2,13 +2,16 @@ touch-vault-secret-file:
 	touch .vault-secret
 
 setup:
-	ansible-playbook setup.yml -i inventory.ini -vv
+	ansible-playbook setup.yml
+
+galaxy-install:
+	ansible-galaxy install -r requirements.yml
 
 deploy:
-	ansible-playbook playbook.yml -i inventory.ini -vv
+	ansible-playbook playbook.yml
 
-vault-encrypt:
-	ansible-vault encrypt group_vars/webservers/vault.yml
+encrypt-vault:
+	ansible-vault encrypt group_vars/all/vault.yml
 
-vault-decrypt:
-	ansible-vault decrypt group_vars/webservers/vault.yml
+decrypt-vault:
+	ansible-vault decrypt group_vars/all/vault.yml
