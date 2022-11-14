@@ -13,7 +13,7 @@ make touch-vault-secret-file
 # install roles and collections
 make galaxy-install
 
-# setup requirements on targets
+# prepare targets environment
 make setup
 
 # deploy the app

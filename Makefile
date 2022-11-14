@@ -8,10 +8,10 @@ galaxy-install:
 	ansible-galaxy install -r requirements.yml
 
 deploy:
-	ansible-playbook playbook.yml
+	ansible-playbook deploy.yml
 
 encrypt-vault:
-	ansible-vault encrypt group_vars/all/vault.yml
+	ansible-vault encrypt group_vars/webservers/vault.yml
 
 decrypt-vault:
-	ansible-vault decrypt group_vars/all/vault.yml
+	ansible-vault decrypt group_vars/webservers/vault.yml
