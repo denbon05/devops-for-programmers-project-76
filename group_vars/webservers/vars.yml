@@ -2,16 +2,3 @@ redmine_db_name: defaultdb
 redmine_db_host: db-postgresql-ams3-71558-do-user-12844620-0.b.db.ondigitalocean.com
 redmine_db_port: 25060
 redmine_db_user: doadmin
-
-datadog_api_key: "{{ datadog_key }}"
-datadog_site: "us5.datadoghq.com"
-datadog_checks:
-  process:
-    init_config:
-    instances:
-      - name: http_check
-        exact_match: false
-        search_string: ["http_check", "http_check.d"]
-        url: http://0.0.0.0:3000
-        method: get
-        http_response_status_code: 200

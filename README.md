@@ -7,8 +7,8 @@
 ## Usage
 
 ```bash
-make touch-vault-secret-file
-# then put vault secret key in .vault-secret
+# create secret for vault (SECRET=hello)
+make touch-vault-secret-file <SECRET>
 
 # install roles and collections
 make galaxy-install
@@ -19,5 +19,3 @@ make setup
 # deploy the app
 make deploy
 ```
-
-<p><b>Remember to encrypt vault files</b></p>
